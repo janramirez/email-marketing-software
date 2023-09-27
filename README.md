@@ -1,66 +1,232 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Email Marketing Software
+In this project, I try to replicate the email marketing application, ConvertKit. This Laravel project implements a Domain Driven Design structure.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Features
+- manage subscribers
+- tags
+- email blasts (one-time broadcast emails)
+- scheduled email blasts (sequential emails)
+- add subscribers to scheduled emails
+- subscription forms
+- track e-mail opens & link clicks
+- generate reports
 
-## About Laravel
+##
+### Subscribers
+Subscribers are added to mailing list using:
+- subscription forms (implemented via API)
+- CSV imports (implemented via Console Commands for Admin)
+- manually
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Subscribers can also be filtered using tags, how the subscriber was added to the list, etc.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Emails
+After the email content is written and saved, it can either be sent:
+- manually using Email blast, or
+- by schedule for a later time
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The subscribers who will get the email can be defined by using filters such as:
+- Tags
+- Which form did they come from
+(Several methods can be implemented here in the future such as the subscribers' purchases, which type of emails are they subscribed to, etc.)
 
-## Learning Laravel
+Metrics to be tracked from email blasts:
+- How many subscribers got the mail
+- How many subscribers opened the mail (can be expressed as a percentage)
+- How many subscribers clicked on a link inside the content, if there's any link (can be expressed as a percentage)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### Email blast
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- create email blast (including filters, content, etc)
+- send email blast (filters subscribers and queues emails)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### Scheduled email sequence
+Scheduled emails can be grouped together and sent in scheduled sequential manner. For example, an email needs to be sent every week for 4 weeks for new subscribers, instead of manually creating email blasts every week, each email can be sent automatically every week in a proper sequence/order.
 
-## Laravel Sponsors
+- create schedules
+- add scheduled emails (includes filters and schedule such as 3 days after last mail)
+- publish schedule (transition from draft to published)
+- proceed a schedule - This sends the emails. It handles all scheduling logic
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Tracking
+Tracking the performance of an email campaign is a must have in an email marketing application. The basic metrics to be implemented are:
 
-### Premium Partners
+- **Total emails sent out**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+   Total number sent for each mail
 
-## Contributing
+- **Open rate**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    Using an html element to signal when an email was opened
 
-## Code of Conduct
+- **Click rate**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   This can be implemented by redirection urls
 
-## Security Vulnerabilities
+### Reports
+- Progress of scheduled mails
+- new subscribers
+- daily new subscribers
+- metrics for sent mails
+- performance for the whole schedule mail sequence
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Data models
 
-## License
+**subscribers:**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Attributes:
+- email
+- first_name
+- last_name
+
+Relationships:
+- form: A **subscriber** has one **form**
+- tags: A **subscriber** has many **tags**
+- received_mails: A **subscriber** has mane **received_mails**
+
+**tags**
+
+Attributes:
+- title
+
+Relationships:
+- subscribers: A **tag** has many **subscribers**
+
+**forms**
+
+Attributes:
+- title
+- content: HTML that can be embedded into websites
+
+Relationships:
+- subscribers: A **form** has many **subscribers**
+
+**email_blast**
+
+Attributes:
+- title
+- content: HTML
+- filters: As a JSON Column such as below 👇 instead of creating extra database tables 
+
+   ```
+   {
+    "form_ids": [1, 2, 3]
+    "tag_ids": [2, 4]
+   }
+   ```
+- status
+- sent_at
+
+Relationships:
+- sent_mails: An **email_blast** has many **sent_mails**. One for each subscriber
+
+
+### Scheduled Emails
+- A sequence contains multiple scheduled emails
+- Each email has a schedule
+
+It will handle scheduling conditions such as
+- 4 days after last email has been sent, but only on Fridays
+- 5 hours after the last email on any day
+
+<br>
+
+**schedules**
+
+Attributes:
+- title
+- status: draft or published
+
+Relationships:
+- scheduled_mails: A **schedule** has many **scheduledMails**
+
+
+**scheduledMails**
+
+Attributes:
+- subject
+- status: draft or published
+- content: HTML content
+- filters: JSON field
+
+Relationships:
+- schedule: A **scheduledMail** belongs to one **schedule**
+- sent_mails: A **scheduledMail** has many **sent_mails**
+
+> *Note*: A scheduled mail is similar to an email blast mail; it also has:
+> - a subject line
+> - HTML content
+> - JSON Filters
+
+**schedule_scheduledMails**  
+Description: each scheduledMail has a unique schedule such as 5 days after the last email, and only on Fridays.
+
+Attributes:
+- delay
+- unit
+- allowed_days
+
+**sent_mails**  
+Description: after sending an email blast or a scheduled mail, it becomes a sent_mail record.
+Attributes:
+- sendable_id: ID of email_blast or scheduledMail
+- sendable_type: email_blast, scheduledMail
+- sent_at
+- opened_at
+- clicked_at
+
+**automations**  
+Description: container for the actual steps 
+
+Attributes:
+- name
+
+Relationships:
+- steps: An **automation** has many **steps**
+
+**automation_steps**  
+Description: contains the flow of an event and multiple actions for automation
+
+Attributes:
+- automation_id
+- type: event, action
+- name
+-value: JSON Column (for unstructured data. *Example below* 👇)
+
+>| id  | automation_id | type  | name  | value |
+>| :---: | :---: | --- | --- | --- |
+>| 1 | 1 | event |subscribeToForm | {"form_id":1} |
+>| 2 | 1 | action |addToSchedule | {"schedule_id":3} |
+
+Relationships:
+- automation: An **automation_step** belongs to one **automation**
+
+## Domains
+Since this project is an implementation of a Domain-Driven Design Architecture, each model lives in a domain that makes sense. Given the following models,
+- subscribers
+- tags
+- subscriber_tag
+- forms
+- email_blasts
+- schedules
+- schedule_scheduledMails
+- scheduledMails
+- sent_mail
+- automations
+- automation_steps
+
+| Model | Domain |
+| --- | --- |
+| subscribers | Subscriber |
+| tags | Subscriber |
+| subscriber_tag | Subscriber |
+| forms | Subscriber |
+| email_blasts | Mail |
+| schedules | Mail |
+| scheduledMails | Mail |
+| schedule_scheduledMails | Mail |
+| sent_mail | Mail |
+| automations | Automation |
+| automation_steps | Automation |
+| *all others* | Shared |
+
