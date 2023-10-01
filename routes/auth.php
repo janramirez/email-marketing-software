@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Web\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Web\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Web\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Web\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Web\Controllers\Auth\NewPasswordController;
+use App\Http\Web\Controllers\Auth\PasswordController;
+use App\Http\Web\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Web\Controllers\Auth\RegisteredUserController;
+use App\Http\Web\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -54,6 +54,6 @@ Route::middleware('auth')->group(function () {
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::post('logout', [AuthAuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 });
