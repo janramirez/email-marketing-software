@@ -168,18 +168,16 @@ automation_steps:
 ```
 
 # Domains
-Since this project is an implementation of a Domain-Driven Design Architecture, each model lives in a domain that makes sense. Given the following models,
-- subscribers
-- tags
-- subscriber_tag
-- forms
-- blasts
-- schedules
-- schedule_scheduledMails
-- scheduledMails
-- sent_mail
-- automations
-- automation_steps
+Since this project is an implementation of a Domain-Driven Design Architecture, each model lives in a domain that makes sense. Given the following models,  
+
+**Subscriber**  
+   The subscriber domain contains classes that are related to subscriber  data  
+**Mail**  
+   The mail domain contains classes related to email data  
+**Automations**  
+   The automation domain contains classes used by automation data  
+**Shared**  
+   The shared domain contains classes that are common to more than one domain  
 
 ## Model-Domain Relation
 
