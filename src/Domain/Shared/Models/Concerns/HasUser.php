@@ -3,6 +3,7 @@
 namespace Domain\Shared\Models\Concerns;
 
 use Domain\Shared\Models\Scopes\UserScope;
+use Domain\Shared\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasUser
@@ -14,6 +15,6 @@ trait HasUser
 
     protected static function booted()
     {
-        static::addGlobalScope(new UserScope()); //TODO Shared\Models\Scopes\UserScope
+        static::addGlobalScope(new UserScope());
     }
 }
