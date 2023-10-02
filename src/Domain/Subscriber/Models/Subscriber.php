@@ -6,6 +6,7 @@ use Domain\Mail\Models\Blast;
 use Domain\Mail\Models\MailGroup;
 use Domain\Mail\Models\ScheduledMail;
 use Domain\Shared\Models\BaseModel;
+use Domain\Shared\Models\Concerns\HasUser;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -19,6 +20,7 @@ class Subscriber extends BaseModel
     use Notifiable, WithData, HasUser;
 
     protected $dataClass = SubscriberData::class; //TODO DTO SubscriberData
+    
     protected $fillable = [
         'email',
         'first_name',
