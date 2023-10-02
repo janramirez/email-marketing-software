@@ -2,6 +2,7 @@
 
 namespace Domain\Shared\Models\Concerns;
 
+use Domain\Shared\Models\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasUser
