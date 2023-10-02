@@ -2,6 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link } from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
+import axios from "axios";
 
 export default {
     components: {
@@ -17,6 +18,9 @@ export default {
         },
     },
     methods: {
+        async importSubscribers() {
+            // TODO
+        },
         nextPage() {
             if (!this.model.subscribers.next_page_url) {
                 return;

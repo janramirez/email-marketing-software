@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Web\Controllers\ProfileController;
+use App\Http\Web\Controllers\Subscriber\ImportSubscribersController;
 use App\Http\Web\Controllers\Subscriber\SubscriberController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
