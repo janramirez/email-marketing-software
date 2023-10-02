@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             SubscriberSeeder::class,
             BlastSeeder::class,
             MailGroupSeeder::class,
-            AutomationSeeder::class,
+            // AutomationSeeder::class,
         ]);
     }
 

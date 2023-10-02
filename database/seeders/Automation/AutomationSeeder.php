@@ -20,6 +20,6 @@ class AutomationSeeder extends Seeder
 
         $automation->steps()->create([
             'type' => 
-        ])
+        ]);
     }
 }
