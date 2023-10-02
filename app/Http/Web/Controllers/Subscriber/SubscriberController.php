@@ -5,6 +5,7 @@ namespace App\Http\Web\Controllers\Subscriber;
 use Domain\Subscriber\Actions\UpsertSubscriberAction;
 use Domain\Subscriber\DataTransferObjects\SubscriberData;
 use Domain\Subscriber\Models\Subscriber;
+use Domain\Subscriber\ViewModels\GetSubscribersViewModel;
 use Domain\Subscriber\ViewModels\UpsertSubscriberViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
