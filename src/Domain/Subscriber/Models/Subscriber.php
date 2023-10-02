@@ -19,7 +19,7 @@ class Subscriber extends BaseModel
 {
     use Notifiable, WithData, HasUser;
 
-    protected $dataClass = SubscriberData::class; //TODO DTO SubscriberData
+    protected $dataClass = SubscriberData::class;
     
     protected $fillable = [
         'email',

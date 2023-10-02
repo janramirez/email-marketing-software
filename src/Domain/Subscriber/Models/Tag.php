@@ -3,6 +3,7 @@
 namespace Domain\Subscriber\Models;
 
 use Domain\Shared\Models\BaseModel;
+use Domain\Shared\Models\Concerns\HasUser;
 use Domain\Subscriber\DataTransferObjects\TagData;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\LaravelData\WithData;

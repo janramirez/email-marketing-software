@@ -3,8 +3,8 @@
 namespace Domain\Subscriber\Models;
 
 use Domain\Shared\Models\BaseModel;
+use Domain\Shared\Models\Concerns\HasUser;
 use Domain\Subscriber\DataTransferObjects\FormData;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\LaravelData\WithData;
 
 class Form extends BaseModel
