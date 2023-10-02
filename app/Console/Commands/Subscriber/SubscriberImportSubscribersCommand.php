@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Subscriber;
 
 use Domain\Shared\Models\User;
+use Domain\Subscriber\Jobs\ImportSubscribersJob;
 use Illuminate\Console\Command;
 
 class SubscriberImportSubscribersCommand extends Command
