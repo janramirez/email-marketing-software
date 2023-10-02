@@ -3,18 +3,24 @@
 namespace Domain\Subscriber\Models;
 
 use Domain\Shared\Models\BaseModel;
+use Domain\Subscriber\DataTransferObjects\FormData;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\LaravelData\WithData;
 
 class Form extends BaseModel
 {
+    use WithData, HasUser;
+
+    protected $dataClass = FormData::class;
+
     protected $fillable = [
         'title',
         'content',
         'form_id'
     ];
 
-    public function subscribers(): HasMany
-    {
-        return $this->hasMany(Subscriber::class);
-    }
+    protected $attributes = [
+        'title' => '-',
+        'content' => '',
+    ];
 }

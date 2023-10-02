@@ -3,16 +3,27 @@
 namespace Domain\Subscriber\Models;
 
 use Domain\Shared\Models\BaseModel;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Domain\Subscriber\DataTransferObjects\TagData;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\LaravelData\WithData;
 
 class Tag extends BaseModel
 {
+    use WithData, HasUser;
+
+    protected $dataClass = TagData::class;
+
     protected $fillable = [
         'title',
+        'user_id',
     ];
 
-    public function subscribers(): HasMany
+    protected $casts = [
+        'id' => 'integer',
+    ];
+
+    public function subscribers(): BelongsToMany
     {
-        return $this->hasMany(Subscriber::class);
+        return $this->belongsToMany(Subscriber::class);
     }
 }
