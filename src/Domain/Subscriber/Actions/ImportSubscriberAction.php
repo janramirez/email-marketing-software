@@ -2,6 +2,7 @@
 
 namespace Domain\Subscriber\Actions;
 
+use Domain\Shared\Actions\ReadCsvAction;
 use Domain\Shared\Models\User;
 use Domain\Subscriber\DataTransferObjects\SubscriberData;
 use Domain\Subscriber\Models\Subscriber;
@@ -11,7 +12,7 @@ class ImportSubscriberAction
 {
     public static function execute(string $path, User $user): void
     {
-        ReadCSVAction::execute($path) // ------------------> TODO: ReadCSVAction (This is a shared action)
+        ReadCsvAction::execute($path)
             ->each(function (array $row) use ($user) {
                 $parsed = [
                     ...$row,
