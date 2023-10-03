@@ -2,7 +2,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link } from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
-import axios from "axios";
 
 export default {
     components: {
@@ -47,7 +46,7 @@ export default {
                 Subscribers
             </h2>
             <Link
-                href="/subscribers/create"
+                :href="route('subscribers.create')"
                 as="button"
                 type="button"
                 class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-2"

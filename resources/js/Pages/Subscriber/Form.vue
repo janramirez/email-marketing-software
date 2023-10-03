@@ -1,11 +1,9 @@
 <script>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { InputLabel } from '@/Components';
 
 export default {
     components: {
         AuthenticatedLayout,
-        InputLabel
     },
     props: {
         model: {
@@ -57,7 +55,7 @@ export default {
 <template>
     <AuthenticatedLayout>
         <div>
-            <InputLabel for="first_name">First Name</InputLabel>
+            <label for="first_name">First Name</label>
             <input
                 v-model="form.first_name"
                 id="first_name"
