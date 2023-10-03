@@ -1,9 +1,12 @@
 <script>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import BreezeAuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { Head, Link } from "@inertiajs/vue3";
 
 export default {
     components: {
-        AuthenticatedLayout,
+        BreezeAuthenticatedLayout,
+        Head,
+        Link,
     },
     props: {
         model: {
@@ -53,33 +56,123 @@ export default {
 </script>
 
 <template>
-    <AuthenticatedLayout>
-        <div>
-            <label for="first_name">First Name</label>
-            <input
-                v-model="form.first_name"
-                id="first_name"
-                type="text"
-                placeholder="First Name"
-            />
+    <Head title="New Subscriber" />
+
+    <BreezeAuthenticatedLayout>
+        <template #header>
+            <h2 class="font-semibold text-xl tex-gray-800 leading-tight">
+                New Subscriber
+            </h2>
+        </template>
+        <div class="py-12 max-w-7xl mx-auto">
+            <form @submit.prevent="submit" class="w-full max-w-lg mx-auto">
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <label
+                            for="first_name"
+                            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                            >First Name</label
+                        >
+                        <input
+                            v-model="form.first_name"
+                            id="first_name"
+                            type="text"
+                            placeholder="First Name"
+                            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus-outline-none focus:bg-white"
+                        />
+                    </div>
+                    <div class="w-full md:w-1/2 px-3">
+                        <label
+                            for="first_name"
+                            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                            >Last Name</label
+                        >
+                        <input
+                            v-model="form.last_name"
+                            id="last_name"
+                            type="text"
+                            placeholder="Last Name"
+                            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        />
+                    </div>
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <label
+                            for="email"
+                            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                            >Email</label
+                        >
+                        <input
+                            v-model="form.email"
+                            id="email"
+                            type="email"
+                            placeholder="Email"
+                            class="appearance-none block w-full bg-gray-200 text-gray-700 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        />
+                    </div>
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-2">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <label
+                            for="form"
+                            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        >
+                            Form
+                        </label>
+                        <div class="relative">
+                            <select
+                                v-model="form.form_id"
+                                id="form_id"
+                                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            >
+                                <option :value="null">-</option>
+                                <option
+                                    :value="form.id"
+                                    v-for="form in model.forms"
+                                    :key="form.id"
+                                >
+                                    {{ form.title }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <label
+                            for="tag_ids"
+                            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        >
+                            Tags
+                        </label>
+                        <div class="relative">
+                            <select
+                                v-model="form.tag_ids"
+                                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="tag_ids multiple"
+                            >
+                                <option
+                                    :value="tag.id"
+                                    v-for="tag in model.tags"
+                                    :key="tag.id"
+                                >
+                                    {{ tag.title }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end mt-10 w-full gap-3">
+                    <Link href="/subscribers" class="text-indigo-600 ml-4">
+                        Cancel
+                    </Link>
+                    <button
+                        type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Save
+                    </button>
+                </div>
+            </form>
         </div>
-        <div>
-            <label for="first_name">Last Name</label>
-            <input
-                v-model="form.last_name"
-                id="last_name"
-                type="text"
-                placeholder="Last Name"
-            />
-        </div>
-        <div>
-            <label for="first_name">Email</label>
-            <input
-                v-model="form.firsemailt_name"
-                id="email"
-                type="email"
-                placeholder="Email"
-            />
-        </div>
-    </AuthenticatedLayout>
+    </BreezeAuthenticatedLayout>
 </template>
