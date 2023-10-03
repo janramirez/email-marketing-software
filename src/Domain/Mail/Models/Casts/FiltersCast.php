@@ -16,10 +16,13 @@ class FiltersCast implements CastsAttributes
             : FilterData::from(FilterData::empty());
     }
 
+    /**
+     * @param FilterData $value
+     */
     public function set($model, string $key, $value, array $attributes)
     {
         return [
-            'filters' => json_decode($value),
+            'filters' => json_encode($value),
         ];
     }
 }
