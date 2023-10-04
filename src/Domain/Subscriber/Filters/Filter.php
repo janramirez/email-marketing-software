@@ -2,6 +2,7 @@
 
 namespace Domain\Subscriber\Filters;
 
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
 
 abstract class Filter
@@ -10,5 +11,5 @@ abstract class Filter
     {
     }
 
-    abstract public function filter(Builder $subscribers): Builder;
+    abstract public function handle(Builder $subscribers, Closure $next): Builder;
 }
