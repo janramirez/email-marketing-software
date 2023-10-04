@@ -65,7 +65,12 @@ export default {
             </h2>
         </template>
         <div class="py-12 max-w-7xl mx-auto">
-            <form @submit.prevent="submit" class="w-full max-w-lg mx-auto">
+            <form @submit.prevent="submit" class="w-full max-w-lg mx-auto bg-white border rounded-md p-6 shadow-lg shadow-slate-400">
+                <div class="border rounded bg-green-50 flex items-center justify-between p-2 mb-6">
+                    <p class="text-slate-500 text-xs m-2">
+                        Add a new subscriber. Form is optional. Tags are recommended so that they can be added to filters.
+                    </p>
+                </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label
