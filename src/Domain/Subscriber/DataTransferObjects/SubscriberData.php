@@ -3,14 +3,14 @@
 namespace Domain\Subscriber\DataTransferObjects;
 
 use Carbon\Carbon;
-use Domain\Subscriber\Models\Form;
-use Domain\Subscriber\Models\Subscriber;
-use Domain\Subscriber\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Lazy;
+use Illuminate\Validation\Rule;
+use Domain\Subscriber\Models\Tag;
+use Domain\Subscriber\Models\Form;
+use Spatie\LaravelData\DataCollection;
+use Domain\Subscriber\Models\Subscriber;
 
 class SubscriberData extends Data
 {
@@ -18,7 +18,8 @@ class SubscriberData extends Data
         public readonly ?int $id,
         public readonly string $email,
         public readonly string $first_name,
-        public readonly string $last_name,
+        public readonly ?string $last_name,
+        public readonly ?string $full_name,
         public readonly ?Carbon $subscribed_at,
         /** @var DataCollection<TagData> */
         public readonly null|Lazy|DataCollection $tags,
