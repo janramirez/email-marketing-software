@@ -23,17 +23,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory([
-            'first_name' => 'Demo',
-            'last_name' => 'User',
-            'email' => self::DEMO_USER_EMAIL,
-            'password' => Hash::make('password'),
-        ])->create();
+        // User::factory([
+        //     'first_name' => 'Demo',
+        //     'last_name' => 'User',
+        //     'email' => self::DEMO_USER_EMAIL,
+        //     'password' => Hash::make('password'),
+        // ])->create();
 
         $this->call([
             SubscriberSeeder::class,
-            BlastSeeder::class,
-            MailGroupSeeder::class,
+            // BlastSeeder::class,
+            // MailGroupSeeder::class,
             // AutomationSeeder::class,
         ]);
     }
