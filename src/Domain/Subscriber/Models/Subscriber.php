@@ -2,12 +2,14 @@
 
 namespace Domain\Subscriber\Models;
 
+use Carbon\Carbon;
 use Domain\Mail\Models\Blast;
 use Domain\Mail\Models\MailGroup;
-use Domain\Mail\Models\ScheduledMail;
+use Domain\Mail\Models\MailGroup\ScheduledMail;
 use Domain\Shared\Models\BaseModel;
 use Domain\Shared\Models\Concerns\HasUser;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,7 +19,7 @@ use Spatie\LaravelData\WithData;
 
 class Subscriber extends BaseModel
 {
-    use Notifiable, WithData, HasUser;
+    use Notifiable, WithData, HasUser, HasUuids;
 
     protected $dataClass = SubscriberData::class;
     
@@ -33,6 +35,14 @@ class Subscriber extends BaseModel
     protected $casts = [
         'id' => 'integer',
     ];
+
+    /**
+     * @return array<int, string>
+     */
+    public function uniqueIds(): array
+    {
+        return ['uuid'];
+    }
 
     // <!-- Relationships -->
 
@@ -81,7 +91,7 @@ class Subscriber extends BaseModel
 
     public function fullName(): Attribute
     {
-        return new Attribute(
+        return Attribute::make(
             get: fn () => "{$this->first_name} {$this->last_name}"
         );
     }
