@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Web\Controllers\Mail\Blast\BlastController;
 use App\Http\Web\Controllers\ProfileController;
 use App\Http\Web\Controllers\Subscriber\ImportSubscribersController;
 use App\Http\Web\Controllers\Subscriber\SubscriberController;
@@ -38,6 +39,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('subscribers', SubscriberController::class);
     Route::post('subscribers/import', ImportSubscribersController::class);
+
+    Route::resource('blasts', BlastController::class);
 });
 
 require __DIR__ . '/auth.php';
