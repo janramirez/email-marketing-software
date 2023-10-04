@@ -107,7 +107,7 @@ export default {
                     <tr
                         v-for="subscriber in model.subscribers.data"
                         :key="subscriber.email"
-                        class="hover:bg-gray-100"
+                        class="hover:bg-slate-200"
                     >
                         <td
                             @click="edit(subscriber)"
