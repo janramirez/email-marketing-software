@@ -2,6 +2,9 @@
 
 namespace Database\Factories\Subscriber;
 
+use Domain\Shared\Models\User;
+use Domain\Subscriber\Models\Form;
+use Domain\Subscriber\Models\Subscriber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SubscriberFactory extends Factory
 {
+    protected $model = Subscriber::class;
     /**
      * Define the model's default state.
      *
@@ -17,7 +21,11 @@ class SubscriberFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'email' => $this->faker->safeEmail(),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
+            'form_id' => Form::factory(),
+            'user_id' => User::factory(),
         ];
     }
 }
