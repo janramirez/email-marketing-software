@@ -7,7 +7,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Domain\Mail\DataTransferObjects\Blast\BlastData;
-use Domain\Mail\Models\Blast\Blast;
+use Domain\Mail\ViewModels\Blast\GetBlastsViewModel;
 use Domain\Mail\ViewModels\Blast\UpsertBlastViewModel;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Response;
@@ -18,7 +18,7 @@ class BlastController
     public function index(): Response
     {
         return Inertia::render('Blast/List', [
-            'model' => Blast::all(),
+            'model' => new GetBlastsViewModel(),
         ]);
     }
 

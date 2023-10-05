@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Web\Controllers\Mail\Blast\BlastController;
+use App\Http\Web\Controllers\Mail\Blast\PreviewBlastController;
 use App\Http\Web\Controllers\Mail\Blast\SendBlastController;
 use App\Http\Web\Controllers\ProfileController;
 use App\Http\Web\Controllers\Subscriber\ImportSubscribersController;
