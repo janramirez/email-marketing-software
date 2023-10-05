@@ -16,16 +16,12 @@ export default {
             type: Object,
             required: true,
         },
-        message: {
-            type: String,
-            required: true,
-        },
     },
     data() {
         return {
             form: {
                 id: null,
-                title: null,
+                subject: null,
                 content: null,
                 filters: {
                     tag_ids: [],
@@ -51,11 +47,17 @@ export default {
     },
     methods: {
         submit() {
-            console.log(this.form);
+            if(this.model.blast){
+                this.$inertia.put(`/blasts/${this.model.blast.id}`, this.form)
+            } else {
+                this.$inertia.post('/blasts', this.form)
+            }
         },
         updateFilters(filters) {
             this.form.filters.tag_ids = filters.tagIds;
             this.form.filters.form_ids = filters.formIds;
+
+            console.log(filters);
         }
     },
 };
@@ -66,8 +68,11 @@ export default {
 
     <BreezeAuthenticatedLayout>
         <template #header>
-            <h2>{{ this.message }}</h2>
+            <h2>New Email Blast</h2>
         </template>
+        <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+            {{ form.progress.percentage }}
+        </progress>
         <div class="py-12 max-w-7xl mx-auto">
             <form
                 @submit.prevent="submit"
@@ -110,7 +115,7 @@ export default {
                         </div>
                     </div>
                     <FiltersForm
-                        :tag="model.tags"
+                        :tags="model.tags"
                         :forms="model.forms"
                         :initial-selected-form-ids="form.filters.form_ids"
                         :initial-selected-tag-ids="form.filters.tag_ids"
