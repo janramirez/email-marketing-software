@@ -27,11 +27,11 @@ export default {
     },
     watch: {
         initialSelectedFormIds: function (value) {
-            this.initialSelectedFormIds = value;
+            this.selectedFormIds = value;
         },
         initialSelectedTagIds: function (value) {
-            this.initialSelectedTagIds = value;
-        }
+            this.selectedTagIds = value;
+        },
     },
     created() {
         this.selectedTagIds = this.initialSelectedTagIds;
@@ -65,7 +65,11 @@ export default {
                 </label>
                 <div class="relative">
                     <select
+                        id="form_ids"
+                        v-model="selectedFormIds"
+                        @change="filtersChanged()"
                         class="block appearance-none w-full bg-gray-100 border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        multiple
                     >
                         <option
                             :value="form.id"
@@ -86,7 +90,11 @@ export default {
                 </label>
                 <div class="relative">
                     <select
+                        id="tag_ids"
+                        v-model="selectedTagIds"
+                        @change="filtersChanged()"
                         class="block appearance-none w-full bg-gray-100 border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        multiple
                     >
                         <option
                             :value="tag.id"
