@@ -10,8 +10,10 @@ class GetPerformanceAction
 {
     public static function execute(Sendable $sendable): PerformanceData
     {
+        $total = SentMail::countOf($sendable);
+
         return new PerformanceData(
-            total: SentMail::countOf($sendable),
+            total: $total,
             open_rate: SentMail::openRate($sendable, $total),
             click_rate: SentMail::clickRate($sendable, $total),
         );

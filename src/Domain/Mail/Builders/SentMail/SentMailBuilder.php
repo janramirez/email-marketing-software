@@ -29,7 +29,7 @@ class SentMailBuilder extends Builder
         $clickedCount = $this
             ->whereSendable($sendable)
             ->whereClicked()
-            ->count;
+            ->count();
 
         return Percent::from($clickedCount, $total);
     }
