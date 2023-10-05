@@ -7,6 +7,7 @@ use Spatie\LaravelData\Data;
 use Domain\Mail\DataTransferObjects\FilterData;
 use Domain\Mail\Enums\Blast\BlastStatus;
 use Spatie\LaravelData\Attributes\WithCast;
+use Spatie\LaravelData\Casts\EnumCast;
 
 class BlastData extends Data
 {

@@ -10,7 +10,8 @@ use Domain\Shared\ViewModels\ViewModel;
 
 class UpsertBlastViewModel extends ViewModel
 {
-    use HasTags, HasForms;
+    use HasTags;
+    use HasForms;
 
     public function __construct(
         public readonly ?Blast $blast = null
