@@ -12,16 +12,14 @@ class EchoMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * constructor
-     */
     public function __construct(public readonly Blast $blast)
     {
     }
 
-     // build() method to build mailables from blast/mailgroup
      public function build()
      {
-        // returns a view
+        return $this
+         ->subject($this->blast->subject)
+         ->view('emails.echo');
      }
 }
