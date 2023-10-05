@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('subscribers/import', ImportSubscribersController::class);
 
     Route::patch('blasts/{blast}/send', SendBlastController::class);
+    Route::get('blasts/{blast}/preview', PreviewBlastController::class);
     Route::resource('blasts', BlastController::class);
 });
 
