@@ -5,7 +5,6 @@ namespace Domain\Mail\Jobs\Blast;
 use Domain\Mail\Actions\Blast\SendBlastAction;
 use Domain\Mail\Models\Blast\Blast;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;

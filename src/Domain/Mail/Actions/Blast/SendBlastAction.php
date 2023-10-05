@@ -32,8 +32,14 @@ class SendBlastAction
                 Mail::to($subscriber)->queue(new EchoMail($blast))
             );
         
+        /**
+         * Mark email as sent
+         */
         $blast->markAsSent();
 
+        /**
+         * create a record for each mail that has been sent to sent_mails table
+         */
         return $subscribers->each(fn (Subscriber $subscriber) =>
             $blast->sent_mails()->create([
                 'subscriber_id' => $subscriber->id,
