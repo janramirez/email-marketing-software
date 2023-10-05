@@ -4,6 +4,7 @@ namespace Domain\Mail\Builders\SentMail;
 
 use Domain\Mail\Contracts\Sendable;
 use Domain\Mail\Models\Blast\Blast;
+use Domain\Shared\ValueObjects\Percent;
 use Illuminate\Database\Eloquent\Builder;
 
 class SentMailBuilder extends Builder
@@ -13,22 +14,31 @@ class SentMailBuilder extends Builder
         return $this->whereSendable($sendable)->count();
     }
 
-    public function openRate(Sendable $sendable, int $total): float
+    public function openRate(Sendable $sendable, int $total): Percent
     {
-        return $this
+        $openedCount = $this
             ->whereSendable($sendable)
             ->whereOpened()
-            ->count() / $total;
+            ->count();
+
+        return Percent::from($openedCount, $total);
     }
 
-    public function clickRate(Sendable $sendable, int $total): float
+    public function clickRate(Sendable $sendable, int $total): Percent
     {
-        return $this
+        $clickedCount = $this
             ->whereSendable($sendable)
             ->whereClicked()
-            ->count / $total;
+            ->count;
+
+        return Percent::from($clickedCount, $total);
     }
 
+    /**
+     * 
+     * Reusable local scopes
+     * 
+     */
     public function whereSendable(Sendable $sendable): self
     {
         return $this
