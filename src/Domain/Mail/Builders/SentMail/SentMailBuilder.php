@@ -10,21 +10,40 @@ class SentMailBuilder extends Builder
 {
     public function countOf(Sendable $sendable): int
     {
-        return $this
-            ->where('sendable_id', $sendable->id())
-            ->where('sendable_type', $sendable->type())
-            ->count();
+        return $this->whereSendable($sendable)->count();
     }
 
     public function openRate(Sendable $sendable, int $total): float
     {
-        $openedCount = $this
-            ->where('sendable_id', $sendable->id())
-            ->where('sendable_type', $sendable->type())
-            ->whereNotNull('opened_at')
-            ->count();
+        return $this
+            ->whereSendable($sendable)
+            ->whereOpened()
+            ->count() / $total;
+    }
 
-        return $openedCount / $total;
+    public function clickRate(Sendable $sendable, int $total): float
+    {
+        return $this
+            ->whereSendable($sendable)
+            ->whereClicked()
+            ->count / $total;
+    }
+
+    public function whereSendable(Sendable $sendable): self
+    {
+        return $this
+        ->where('sendable_id', $sendable->id())
+        ->where('sendable_type', $sendable->type());
+    }
+
+    public function whereOpened(): self
+    {
+        return $this->whereNotNull('opened_at');
+    }
+
+    public function whereClicked(): self
+    {
+        return $this->whereNotNull('clicked_at');
     }
 
 }
