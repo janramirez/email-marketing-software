@@ -99,7 +99,7 @@ export default {
                         <td class="px-6 py-4" @click="">
                             <PerformanceLine
                                 v-if="blast.status !== 'draft'"
-                                :performance="model.performance[blast.id]"
+                                :performance="model.performances[blast.id]"
                             ></PerformanceLine>
                             <div v-else>-</div>
                         </td>
