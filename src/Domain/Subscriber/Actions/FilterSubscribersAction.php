@@ -5,6 +5,7 @@ namespace Domain\Subscriber\Actions;
 use Domain\Mail\Models\Blast\Blast;
 use Domain\Subscriber\Enums\Filters;
 use Domain\Subscriber\Models\Subscriber;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
 
 class FilterSubscribersAction

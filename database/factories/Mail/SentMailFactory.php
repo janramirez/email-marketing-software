@@ -2,6 +2,9 @@
 
 namespace Database\Factories\Mail;
 
+use Domain\Mail\Models\Blast\Blast;
+use Domain\Mail\Models\SentMail;
+use Domain\Subscriber\Models\Subscriber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +12,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SentMailFactory extends Factory
 {
+    protected $model = SentMail::class;
+
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
         return [
-            //
+            'sendable_id' => Blast::factory(),
+            'sendable_type' => Blast::class,
+            'subscriber_id' => Subscriber::factory(),
+            'sent_at' => now(),
         ];
     }
 }

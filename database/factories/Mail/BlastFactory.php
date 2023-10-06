@@ -2,6 +2,9 @@
 
 namespace Database\Factories\Mail;
 
+use Domain\Mail\Enums\Blast\BlastStatus;
+use Domain\Mail\Models\Blast\Blast;
+use Domain\Shared\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +12,20 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BlastFactory extends Factory
 {
+    protected $model = Blast::class;
+
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
+
         return [
-            //
+            'subject' => $this->faker->words(2, true),
+            'content' => $this->faker->randomHtml(),
+            'filters' => [],
+            'status' => BlastStatus::Draft,
+            'user_id' => User::factory(),
         ];
     }
 }

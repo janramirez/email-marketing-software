@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Mail;
 
+use Domain\Mail\Models\MailGroup\MailGroup;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MailGroupFactory extends Factory
 {
+    protected $model = MailGroup::class;
+
     /**
      * Define the model's default state.
      *
