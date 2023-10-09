@@ -44,4 +44,13 @@ class SubscriberController
 
         return Redirect::route('subscribers.index');
     }
+
+    public function update(
+        SubscriberData $data,
+        Request $request
+    ): RedirectResponse {
+        UpsertSubscriberAction::execute($data, $request->user());
+
+        return Redirect::route('subscribers.edit');
+    }
 }
