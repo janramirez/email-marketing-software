@@ -36,6 +36,8 @@ class ScheduledMail extends BaseModel implements Sendable
         'status' => ScheduledMailStatus::Draft,
     ];
 
+    // RELATIONSHIPS
+
     public function mail_group(): BelongsTo
     {
         return $this->belongsTo(MailGroup::class);
@@ -62,10 +64,17 @@ class ScheduledMail extends BaseModel implements Sendable
         return $this->subject;
     }
 
+    // ADDITIONAL METHODS
+
     public function shouldSendToday(): bool
     {
         $dayName = Str::lower(now()->dayName);
         
         return $this->schedule->allowed_days->{$dayName};
+    }
+
+    public function enoughTimePassedSince(SentMail $mail): bool
+    {
+        return $this->schedule->unit->timePassedSince($mail->sent_at) >= $this->schedule->delay;
     }
 }
