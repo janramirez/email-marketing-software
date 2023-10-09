@@ -64,7 +64,7 @@ class ScheduledMail extends BaseModel implements Sendable
         return $this->subject;
     }
 
-    // ADDITIONAL METHODS
+    // HELPER METHODS
 
     public function shouldSendToday(): bool
     {

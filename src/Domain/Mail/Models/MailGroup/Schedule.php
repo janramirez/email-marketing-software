@@ -2,6 +2,7 @@
 
 namespace Domain\Mail\Models\MailGroup;
 
+use Domain\Mail\Enums\MailGroup\ScheduledMailUnit;
 use Domain\Shared\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
