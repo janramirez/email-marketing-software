@@ -2,14 +2,15 @@
 
 namespace Domain\Mail\Models\MailGroup;
 
-use Domain\Mail\Contracts\Sendable;
-use Domain\Mail\Enums\MailGroup\ScheduledMailStatus;
-use Domain\Mail\Models\Casts\FiltersCast;
+use Illuminate\Support\Str;
 use Domain\Mail\Models\SentMail;
+use Domain\Mail\Contracts\Sendable;
 use Domain\Shared\Models\BaseModel;
+use Domain\Mail\Models\Casts\FiltersCast;
 use Domain\Shared\Models\Concerns\HasUser;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Domain\Mail\Enums\MailGroup\ScheduledMailStatus;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class ScheduledMail extends BaseModel implements Sendable
@@ -59,5 +60,12 @@ class ScheduledMail extends BaseModel implements Sendable
     public function type(): string
     {
         return $this->subject;
+    }
+
+    public function shouldSendToday(): bool
+    {
+        $dayName = Str::lower(now()->dayName);
+        
+        return $this->schedule->allowed_days->{$dayName};
     }
 }
