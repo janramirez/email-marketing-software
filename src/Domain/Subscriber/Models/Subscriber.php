@@ -44,7 +44,7 @@ class Subscriber extends BaseModel
         return ['uuid'];
     }
 
-    // <!-- Relationships -->
+    // RELATIONSHIPS
 
     public function tags(): BelongsToMany
     {
@@ -62,6 +62,18 @@ class Subscriber extends BaseModel
         return $this->belongsToMany(Blast::class);
     }
 
+    public function mail_group(): BelongsToMany
+    {
+        return $this->belongsToMany(MailGroup::class)->withPivot('subscribed_at');
+    }
+
+    public function sent_mails(): HasMany
+    {
+        return $this->hasMany(SentMail::class);
+    }
+    
+    // ADDITIONAL ATTRIBUTES
+
     public function received_mails(): HasMany
     {
         return $this->hasMany(SentMail::class);
@@ -72,27 +84,17 @@ class Subscriber extends BaseModel
         return $this->hasOne(SentMail::class)->latestOfMany()->withDefault();
     }
 
-    public function mail_group(): BelongsToMany
-    {
-        return $this->belongsToMany(MailGroup::class)->withPivot('subscribed_at');
-    }
-
-    public function sent_mails(): HasMany
-    {
-        return $this->hasMany(SentMail::class);
-    }
-
-    public function tooEarlyfor(ScheduledMail $mail): bool
-    {
-        return !$mail->enoughTimePassedSince($this->last_received_mail);
-    }
-
-    // <!-- Additional attributes -->
-
     public function fullName(): Attribute
     {
         return Attribute::make(
             get: fn () => "{$this->first_name} {$this->last_name}"
         );
+    }
+
+    // HELPER METHODS
+
+    public function tooEarlyfor(ScheduledMail $mail): bool
+    {
+        return !$mail->enoughTimePassedSince($this->last_received_mail);
     }
 }
