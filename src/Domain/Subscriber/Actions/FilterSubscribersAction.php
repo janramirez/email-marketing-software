@@ -2,6 +2,7 @@
 
 namespace Domain\Subscriber\Actions;
 
+use Domain\Mail\Contracts\Sendable;
 use Domain\Mail\Models\Blast\Blast;
 use Domain\Subscriber\Enums\Filters;
 use Domain\Subscriber\Models\Subscriber;
@@ -13,18 +14,18 @@ class FilterSubscribersAction
     /**
      * @return Collection<Subscriber>
      */
-    public static function execute(Blast $blast): Collection
+    public static function execute(Sendable $mail): Collection
     {
         return app(Pipeline::class)
             ->send(Subscriber::query())
-            ->through(self::filters($blast))
+            ->through(self::filters($mail))
             ->thenReturn()
             ->get();
     }
 
-    public static function filters(Blast $blast): array
+    public static function filters(Sendable $mail): array
     {
-        return collect($blast->filters->toArray())
+        return collect($mail->filters->toArray())
             ->map(fn (array $ids, string $key) => 
                 Filters::from($key)->createFilter($ids)
             )
