@@ -2,6 +2,7 @@
 
 namespace Domain\Mail\DataTransferObjects\MailGroup;
 
+use Domain\Mail\Enums\MailGroup\ScheduledMailUnit;
 use Spatie\LaravelData\Data;
 
 class ScheduleData extends Data
