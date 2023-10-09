@@ -2,6 +2,7 @@
 
 namespace Domain\Mail\Mails;
 
+use Domain\Mail\Contracts\Sendable;
 use Domain\Mail\Models\Blast\Blast;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,14 +13,14 @@ class EchoMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public readonly Blast $blast)
+    public function __construct(public readonly Sendable $mail)
     {
     }
 
      public function build()
      {
         return $this
-         ->subject($this->blast->subject)
+         ->subject($this->mail->subject())
          ->view('emails.echo');
      }
 }
