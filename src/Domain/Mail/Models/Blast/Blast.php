@@ -5,6 +5,7 @@ namespace Domain\Mail\Models\Blast;
 use Domain\Mail\Builders\Blast\BlastBuilder;
 use Domain\Mail\Contracts\Sendable;
 use Domain\Mail\DataTransferObjects\Blast\BlastData;
+use Domain\Mail\DataTransferObjects\FilterData;
 use Domain\Mail\Enums\Blast\BlastStatus;
 use Domain\Mail\Models\Casts\FiltersCast;
 use Domain\Mail\Models\SentMail;
@@ -38,6 +39,8 @@ class Blast extends BaseModel implements Sendable
         'status' => BlastStatus::Draft,
     ];
 
+    // SENDABLE
+
     public function id(): int
     {
         return $this->id;
@@ -47,6 +50,23 @@ class Blast extends BaseModel implements Sendable
     {
         return $this::class;
     }
+
+    public function subject(): string
+    {
+        return $this->subject;
+    }
+
+    public function content(): string
+    {
+        return $this->content;
+    }
+
+    public function filters(): FilterData
+    {
+        return $this->filters;
+    }
+
+    // QUERY BUILDER
 
     public function newEloquentBuilder($query): BlastBuilder
     {

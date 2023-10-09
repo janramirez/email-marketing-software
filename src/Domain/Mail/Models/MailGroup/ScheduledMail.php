@@ -5,6 +5,7 @@ namespace Domain\Mail\Models\MailGroup;
 use Illuminate\Support\Str;
 use Domain\Mail\Models\SentMail;
 use Domain\Mail\Contracts\Sendable;
+use Domain\Mail\DataTransferObjects\FilterData;
 use Domain\Shared\Models\BaseModel;
 use Domain\Mail\Models\Casts\FiltersCast;
 use Domain\Shared\Models\Concerns\HasUser;
@@ -62,6 +63,21 @@ class ScheduledMail extends BaseModel implements Sendable
     public function type(): string
     {
         return $this->subject;
+    }
+
+    public function subject(): string
+    {
+        return $this->subject;
+    }
+
+    public function content(): string
+    {
+        return $this->content;
+    }
+
+    public function filters(): FilterData
+    {
+        return $this->filters;
     }
 
     // HELPER METHODS
