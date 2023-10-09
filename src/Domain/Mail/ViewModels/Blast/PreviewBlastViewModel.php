@@ -13,11 +13,11 @@ class PreviewBlastViewModel extends ViewModel
 
     public function subject(): string
     {
-        return $this->mail->blast->subject;
+        return $this->mail->mail->subject();
     }
 
     public function content(): string
     {
-        return $this->mail->blast->content;
+        return $this->mail->mail->content();
     }
 }
