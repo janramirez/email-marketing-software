@@ -6,6 +6,7 @@ use Domain\Mail\Mails\EchoMail;
 use Domain\Mail\Models\MailGroup\MailGroup;
 use Domain\Mail\Models\MailGroup\ScheduledMail;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 
 class ProceedMailGroupAction
@@ -63,8 +64,11 @@ class ProceedMailGroupAction
     /**
      * Sends scheduled mail to each subscriber in $schedulableAudience collection
      */
-    private static function sendMails(Collection $schedulableAudience, ScheduledMail $mail, MailGroup $mailgroup)
-    {
+    private static function sendMails(
+        Collection $schedulableAudience, 
+        ScheduledMail $mail, 
+        MailGroup $mailgroup
+    ): void {
         foreach ($schedulableAudience as $subscriber) {
             Mail::to($subscriber)->queue(new EchoMail($mail));
 
@@ -86,5 +90,26 @@ class ProceedMailGroupAction
         $mailgroup->subscribers
             ->whereIn('subscriber_id', $schedulableAudience->pluck('id'))
             ->update(['status' => SubscriberStatus::InProgress]);
+    }
+
+    /**
+     * This maintains a record of which scheduled mails are sent to which subscribers
+     * $mailsBySubscribers = [
+     *                          'subscriber_id' => [mail1_id, mail2_id]
+     *                          '1' => [1, 2],
+     *                          '4' => [1, 3, 4],
+     *                      ]
+     */
+    private static function addMailToAudience(
+        Collection $audience, 
+        ScheduledMail $mail
+    ): void {
+        foreach($audience as $subscriber) {
+            if(!Arr::get(self::$mailsBySubscribers, $subscriber->id)) {
+                self::$mailsBySubscribers[$subscriber->id] = [];
+            }
+
+            self::$mailsBySubscribers[$subscriber->id][] = $mail->id;
+        }
     }
 }
