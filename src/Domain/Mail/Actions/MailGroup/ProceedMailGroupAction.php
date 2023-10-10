@@ -2,9 +2,12 @@
 
 namespace Domain\Mail\Actions\MailGroup;
 
+use Domain\Mail\Enums\MailGroup\SubscriberStatus;
 use Domain\Mail\Mails\EchoMail;
 use Domain\Mail\Models\MailGroup\MailGroup;
 use Domain\Mail\Models\MailGroup\ScheduledMail;
+use Domain\Subscriber\Models\Subscriber;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
@@ -84,10 +87,11 @@ class ProceedMailGroupAction
      * @param Collection<Subscriber> $schedulableAudience
      * @return void
      */
-    public static function markAsInProgress(MailGroup $mailgroup, Collection $schedulableAudience): void
-    {
-
-        $mailgroup->subscribers
+    private static function markAsInProgress(
+        MailGroup $mailgroup, 
+        Collection $schedulableAudience
+    ): void {
+        $mailgroup->subscribers()
             ->whereIn('subscriber_id', $schedulableAudience->pluck('id'))
             ->update(['status' => SubscriberStatus::InProgress]);
     }
@@ -111,5 +115,32 @@ class ProceedMailGroupAction
 
             self::$mailsBySubscribers[$subscriber->id][] = $mail->id;
         }
+    }
+
+    public static function markAsCompleted(MailGroup $mailgroup): void
+    {
+        $subscribers = Subscriber::withCount([
+            'received_mails' => fn (Builder $receivedMails) => 
+                $receivedMails->whereMailGroup($mailgroup)
+            ])
+            ->find(array_keys(self::$mailsBySubscribers))
+            ->mapWithKeys(fn (Subscriber $subscriber) => [
+                $subscriber->id => $subscriber,
+            ]);
+
+        $completedSubscriberIds = [];
+        foreach (self::$mailsBySubscribers as $subscriberId => $mailIds) {
+            $subscriber = $subscribers[$subscriberId];
+
+            if ($subscriber->received_mails_count === count($mailIds)) {
+                $completedSubscriberIds[] = $subscriber->id;
+            }
+        }
+
+        $mailgroup->subscribers()
+            ->whereIn('subscriber_id', $completedSubscriberIds)
+            ->update([
+                'status' => SubscriberStatus::Completed,
+            ]);
     }
 }
