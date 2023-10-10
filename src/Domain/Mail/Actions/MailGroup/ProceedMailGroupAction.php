@@ -40,6 +40,27 @@ class ProceedMailGroupAction
     }
 
     /**
+     * return [
+     *          array $audience = array of all audience of the scheduled mail,
+     *          array $schedulableAudience = array of subscribers, filtered from $audience, who should receive the scheduled mail today.
+     *        ]
+     */
+    private static function audience(ScheduledMail $mail): array
+    {
+        $audience = $mail->audience();
+
+        if(!$mail->shouldSendToday()) {
+            return [$audience, collect([])];
+        }
+
+        $schedulableAudience = $audience
+            ->reject->alreadyReceived($mail)
+            ->reject->tooEarlyFor($mail);
+        
+        return [$audience, $schedulableAudience];
+    }
+
+    /**
      * @param MailGroup $mailgroup
      * @param Collection<Subscriber> $schedulableAudience
      * @return void
