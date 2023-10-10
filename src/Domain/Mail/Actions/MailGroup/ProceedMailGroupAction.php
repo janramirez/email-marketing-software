@@ -61,6 +61,21 @@ class ProceedMailGroupAction
     }
 
     /**
+     * Sends scheduled mail to each subscriber in $schedulableAudience collection
+     */
+    private static function sendMails(Collection $schedulableAudience, ScheduledMail $mail, MailGroup $mailgroup)
+    {
+        foreach ($schedulableAudience as $subscriber) {
+            Mail::to($subscriber)->queue(new EchoMail($mail));
+
+            $mail->sent_mails()->create([
+                'subscriber_id' => $subscriber->id,
+                'user_id' => $mailgroup->user->id,
+            ]);
+        }
+    }
+
+    /**
      * @param MailGroup $mailgroup
      * @param Collection<Subscriber> $schedulableAudience
      * @return void
