@@ -10,26 +10,21 @@ use Illuminate\Support\Facades\Mail;
 
 class ProceedMailGroupAction
 {
-    public static function execute(MailGroup $mailgroup): int
+    private static array $mailsBySubscribers = [];
+
+    public static function execute(MailGroup $mailgroup): void
     {
-        $sentMailCount = 0;
-
         foreach ($mailgroup->mails()->wherePublished()->get() as $mail) {
-            $subscribers = self::subscribers($mail);
+            [$audience, $schedulableAudience] = self::audience($mail);
 
-            foreach ($subscribers as $subscriber) {
-                Mail::to($subscriber)->queue(new EchoMail($mail));
+            self::sendMails($schedulableAudience, $mail, $mailgroup);
 
-                $mail->sent_mails()->create([
-                    'subscriber_id' => $subscriber->id,
-                    'user_id' => $mailgroup->user->id,
-                ]);
-            }
+            self::addMailToAudience($audience, $mail);
 
-            $sentMailCount += $subscribers->count();
+            self::markAsInProgress($mailgroup, $schedulableAudience);
         }
 
-        return $sentMailCount;
+        self::markAsCompleted($mailgroup);
     }
 
     public static function subscribers(ScheduledMail $mail): Collection
@@ -42,5 +37,18 @@ class ProceedMailGroupAction
         return $mail->audience()
             ->reject->alreadyReceived($mail)
             ->reject->tooEarlyFor($mail);
+    }
+
+    /**
+     * @param MailGroup $mailgroup
+     * @param Collection<Subscriber> $schedulableAudience
+     * @return void
+     */
+    public static function markAsInProgress(MailGroup $mailgroup, Collection $schedulableAudience): void
+    {
+
+        $mailgroup->subscribers
+            ->whereIn('subscriber_id', $schedulableAudience->pluck('id'))
+            ->update(['status' => SubscriberStatus::InProgress]);
     }
 }
