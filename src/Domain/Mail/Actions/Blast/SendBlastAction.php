@@ -5,7 +5,6 @@ namespace Domain\Mail\Actions\Blast;
 use Domain\Mail\Exceptions\CannotSendBlast;
 use Domain\Mail\Mails\EchoMail;
 use Domain\Mail\Models\Blast\Blast;
-use Domain\Subscriber\Actions\FilterSubscribersAction;
 use Domain\Subscriber\Models\Subscriber;
 use Illuminate\Support\Facades\Mail;
 
@@ -27,7 +26,7 @@ class SendBlastAction
          * filter subscribers based on blast filters,
          * then send email
          */
-        $subscribers = FilterSubscribersAction::execute($blast)
+        $subscribers = $blast->audience()
             ->each(fn (Subscriber $subscriber) =>
                 Mail::to($subscriber)->queue(new EchoMail($blast))
             );

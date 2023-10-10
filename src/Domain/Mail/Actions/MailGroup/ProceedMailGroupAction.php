@@ -5,7 +5,6 @@ namespace Domain\Mail\Actions\MailGroup;
 use Domain\Mail\Mails\EchoMail;
 use Domain\Mail\Models\MailGroup\MailGroup;
 use Domain\Mail\Models\MailGroup\ScheduledMail;
-use Domain\Subscriber\Actions\FilterSubscribersAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
 
@@ -40,7 +39,7 @@ class ProceedMailGroupAction
             return collect([]);
         }
 
-        return FilterSubscribersAction::execute($mail)
+        return $mail->audience()
             ->reject->alreadyReceived($mail)
             ->reject->tooEarlyFor($mail);
     }
