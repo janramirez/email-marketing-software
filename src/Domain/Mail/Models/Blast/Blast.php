@@ -11,12 +11,15 @@ use Domain\Mail\Models\Casts\FiltersCast;
 use Domain\Mail\Models\SentMail;
 use Domain\Shared\Models\BaseModel;
 use Domain\Shared\Models\Concerns\HasUser;
+use Domain\Subscriber\Models\Concerns\HasAudience;
+use Domain\Subscriber\Models\Subscriber;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\LaravelData\WithData;
 
 class Blast extends BaseModel implements Sendable
 {
-    use WithData, HasUser;
+    use WithData, HasUser, HasAudience;
 
     protected $fillable = [
         'id',
@@ -76,5 +79,10 @@ class Blast extends BaseModel implements Sendable
     public function sent_mails(): MorphMany
     {
         return $this->morphMany(SentMail::class, 'sendable');
+    }
+
+    public function audienceQuery(): Builder
+    {
+        return Subscriber::query();
     }
 }

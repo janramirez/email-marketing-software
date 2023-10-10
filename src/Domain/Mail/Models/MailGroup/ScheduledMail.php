@@ -11,12 +11,15 @@ use Domain\Mail\Models\Casts\FiltersCast;
 use Domain\Shared\Models\Concerns\HasUser;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Domain\Mail\Enums\MailGroup\ScheduledMailStatus;
+use Domain\Subscriber\Models\Concerns\HasAudience;
+use Domain\Subscriber\Models\Subscriber;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class ScheduledMail extends BaseModel implements Sendable
 {
-    use HasUser;
+    use HasUser, HasAudience;
 
     protected $fillable = [
         'mail_group_id',
@@ -92,5 +95,15 @@ class ScheduledMail extends BaseModel implements Sendable
     public function enoughTimePassedSince(SentMail $mail): bool
     {
         return $this->schedule->unit->timePassedSince($mail->sent_at) >= $this->schedule->delay;
+    }
+
+    // QUERY BUILDERS
+
+    public function audienceQuery(): Builder
+    {
+        return Subscriber::whereIn(
+            'id',
+            $this->mail_group->subscribers()->select('subscribers.id')->pluck('id')
+        );
     }
 }
