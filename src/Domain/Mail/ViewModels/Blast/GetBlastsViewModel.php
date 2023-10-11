@@ -24,7 +24,7 @@ class GetBlastsViewModel extends ViewModel
          */
         return Blast::all()
             ->mapWithKeys(fn (Blast $blast) => [
-                $blast->id => GetPerformanceAction::execute($blast),
+                $blast->id => $blast->performance(),
             ]);
     }
 }
