@@ -6,8 +6,10 @@ use Domain\Mail\Builders\Blast\BlastBuilder;
 use Domain\Mail\Contracts\Sendable;
 use Domain\Mail\DataTransferObjects\Blast\BlastData;
 use Domain\Mail\DataTransferObjects\FilterData;
+use Domain\Mail\DataTransferObjects\PerformanceData;
 use Domain\Mail\Enums\Blast\BlastStatus;
 use Domain\Mail\Models\Casts\FiltersCast;
+use Domain\Mail\Models\Concerns\HasPerformance;
 use Domain\Mail\Models\SentMail;
 use Domain\Shared\Models\BaseModel;
 use Domain\Shared\Models\Concerns\HasUser;
@@ -19,7 +21,7 @@ use Spatie\LaravelData\WithData;
 
 class Blast extends BaseModel implements Sendable
 {
-    use WithData, HasUser, HasAudience;
+    use WithData, HasUser, HasAudience, HasPerformance;
 
     protected $fillable = [
         'id',
@@ -84,5 +86,17 @@ class Blast extends BaseModel implements Sendable
     public function audienceQuery(): Builder
     {
         return Subscriber::query();
+    }
+
+    // PERFORMANCE
+    public function performance(): PerformanceData
+    {
+        $total = SentMail::countOf($this);
+
+        return new PerformanceData(
+            total: $total,
+            open_rate: $this->openRate($total),
+            click_rate: $this->clickRate($total),
+        );
     }
 }
