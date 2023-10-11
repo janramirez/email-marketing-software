@@ -8,6 +8,8 @@ use Domain\Mail\Models\MailGroup;
 use Domain\Mail\Models\MailGroup\ScheduledMail;
 use Domain\Shared\Models\BaseModel;
 use Domain\Shared\Models\Concerns\HasUser;
+use Domain\Subscriber\Builders\SubscriberBuilder;
+use Domain\Subscriber\DataTransferObjects\SubscriberData;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -96,5 +98,11 @@ class Subscriber extends BaseModel
     public function tooEarlyfor(ScheduledMail $mail): bool
     {
         return !$mail->enoughTimePassedSince($this->last_received_mail);
+    }
+
+    // QUERY BUILDER
+    public function newEloquentBuilder($query): SubscriberBuilder
+    {
+        return new SubscriberBuilder($query);
     }
 }

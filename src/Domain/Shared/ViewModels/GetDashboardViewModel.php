@@ -5,22 +5,26 @@ namespace Domain\Shared\ViewModels;
 use Domain\Mail\DataTransferObjects\PerformanceData;
 use Domain\Mail\Models\SentMail;
 use Domain\Shared\Filters\DateFilter;
+use Domain\Shared\Models\User;
 use Domain\Shared\ValueObjects\Percent;
 use Domain\Subscriber\DataTransferObjects\DailySubscribersData;
 use Domain\Subscriber\DataTransferObjects\NewSubscribersCountData;
 use Domain\Subscriber\Models\Subscriber;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class GetDashboardViewModel extends ViewModel
 {
+    public function __construct(private readonly User $user)
+    {
+    }
     public function newSubscribersCount(): NewSubscribersCountData
     {
         return new NewSubscribersCountData(
             total: Subscriber::count(),
             this_month: Subscriber::whereSubscribedBetween(DateFilter::thisMonth())->count(),
             this_week: Subscriber::whereSubscribedBetween(DateFilter::thisWeek())->count(),
-            today: Subscriber::whereSubscribedBetween(DateFilter::toady())->count(),
+            today: Subscriber::whereSubscribedBetween(DateFilter::today())->count(),
         );
     }
 
@@ -46,7 +50,7 @@ class GetDashboardViewModel extends ViewModel
     private function averageClickRate(int $total): Percent
     {
         return Percent::from(
-            SentMail::wherClicked()->count(),
+            SentMail::whereClicked()->count(),
             $total
         );
     }
