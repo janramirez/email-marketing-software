@@ -60,14 +60,8 @@ class MailGroup extends BaseModel
     }
 
     // PERFORMANCE
-    public function performance(): PerformanceData
+    public function totalInstances(): int
     {
-        $total = $this->activeSubscriberCount();
-
-        return new PerformanceData(
-            total: $total,
-            open_rate: $this->openRate($total),
-            click_rate: $this->clickRate($total),
-        );
+        return $this->activeSubscriberCount();
     }
 }

@@ -8,8 +8,18 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 trait HasPerformance
 {
-    abstract public function performance(): PerformanceData;
-    abstract public function sent_mails(): Relation;
+    abstract public function totalInstances(): int;
+
+    public function performance(): PerformanceData
+    {
+        $total = $this->totalInstances();
+
+        return new PerformanceData(
+            total: $total,
+            open_rate: $this->openRate($total),
+            click_rate: $this->clickRate($total),
+        );
+    }
 
     public function openRate(int $total): Percent
     {

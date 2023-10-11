@@ -110,14 +110,8 @@ class ScheduledMail extends BaseModel implements Sendable
     }
 
     // PERFORMANCE
-    public function performance(): PerformanceData
+    public function totalInstances(): int
     {
-        $total = SentMail::countOf($this);
-
-        return new PerformanceData(
-            total: $total,
-            open_rate: $this->openRate($total),
-            click_rate: $this->clickRate($total),
-        );
+        return SentMail::countOf($this);
     }
 }
